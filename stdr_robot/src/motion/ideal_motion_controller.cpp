@@ -53,10 +53,43 @@ namespace stdr_robot {
   void IdealMotionController::calculateMotion(const ros::TimerEvent& event) 
   {
     //!< updates _posePtr based on _currentTwist and time passed (event.last_real)
+    count++;
+    
+    if(count < -5)
+	ROS_WARN_STREAM_THROTTLE(1,"Robot " << _namespace << " " << count);
     
     ros::Duration dt = ros::Time::now() - event.last_real;
+      
+    if (robot_state.at(id) == 0)
+    {
+	_currentTwist.angular.z = 2*sin(err_ang.at(id));
+	_currentTwist.linear.x = 0.0;	
+    }
+    if(robot_state.at(id) == 1)
+    {
+	_currentTwist.angular.z = 2*sin(err_ang.at(id));
+	_currentTwist.angular.z = 4*err_lin.at(id); // MULTI CROSS
+	if (_currentTwist.linear.x > 10)
+	    _currentTwist.linear.x = 10;
+	if (_currentTwist.linear.x < 0.5)
+	    _currentTwist.linear.x = 0.5;
+    }
+    if(robot_state.at(id) == 2)
+    { 
+	_currentTwist.angular.z = 2*sin(err_ang.at(id));
+	_currentTwist.linear.x = 1.5*err_lin.at(id); // MULTI CROSS
+	if (_currentTwist.linear.x > 7)
+	    _currentTwist.linear.x = 7;
+	if (_currentTwist.linear.x < 0.2)
+	    _currentTwist.linear.x = 0.2;		
+    }
+    if(robot_state.at(id) == 3)
+    {
+	_currentTwist.angular.z = 2*sin(err_ang.at(id));
+	_currentTwist.linear.x = 0.0;	
+    }
     
-    if (_currentTwist.angular.z == 0) {
+    if (fabs(_currentTwist.angular.z) <= 0.0001) {
       
       _pose.x += _currentTwist.linear.x * dt.toSec() * cosf(_pose.theta);
       _pose.y += _currentTwist.linear.x * dt.toSec() * sinf(_pose.theta);

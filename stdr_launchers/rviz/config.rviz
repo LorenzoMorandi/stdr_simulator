@@ -4,9 +4,10 @@ Panels:
     Name: Displays
     Property Tree Widget:
       Expanded:
+        - /TF1
         - /TF1/Frames1
       Splitter Ratio: 0.647651
-    Tree Height: 658
+    Tree Height: 595
   - Class: rviz/Selection
     Name: Selection
   - Class: rviz/Tool Properties
@@ -25,7 +26,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: LaserScan
+    SyncSource: ""
 Visualization Manager:
   Class: ""
   Displays:
@@ -54,6 +55,7 @@ Visualization Manager:
       Enabled: true
       Name: Map
       Topic: /map
+      Unreliable: false
       Value: true
     - Class: rviz/TF
       Enabled: true
@@ -64,23 +66,77 @@ Visualization Manager:
           Value: true
         map_static:
           Value: true
-        robot0:
+        robot10:
           Value: true
-        robot0_laser_0:
+        robot11:
           Value: true
-        robot0_sonar_0:
+        robot12:
           Value: true
-        robot0_sonar_1:
+        robot15:
           Value: true
-        robot0_sonar_2:
+        robot17:
           Value: true
-        robot0_sonar_3:
+        robot18:
           Value: true
-        robot0_sonar_4:
+        robot19:
+          Value: true
+        robot21:
+          Value: true
+        robot22:
+          Value: true
+        robot23:
+          Value: true
+        robot24:
+          Value: true
+        robot26:
+          Value: true
+        robot27:
+          Value: true
+        robot29:
+          Value: true
+        robot30:
+          Value: true
+        robot31:
+          Value: true
+        robot32:
+          Value: true
+        robot33:
+          Value: true
+        robot34:
+          Value: true
+        robot38:
+          Value: true
+        robot39:
+          Value: true
+        robot4:
+          Value: true
+        robot41:
+          Value: true
+        robot42:
+          Value: true
+        robot43:
+          Value: true
+        robot44:
+          Value: true
+        robot45:
+          Value: true
+        robot46:
+          Value: true
+        robot47:
+          Value: true
+        robot48:
+          Value: true
+        robot5:
+          Value: true
+        robot6:
+          Value: true
+        robot7:
+          Value: true
+        robot8:
           Value: true
         world:
           Value: true
-      Marker Scale: 2
+      Marker Scale: 100
       Name: TF
       Show Arrows: false
       Show Axes: true
@@ -89,19 +145,74 @@ Visualization Manager:
         world:
           map:
             map_static:
-              robot0:
-                robot0_laser_0:
-                  {}
-                robot0_sonar_0:
-                  {}
-                robot0_sonar_1:
-                  {}
-                robot0_sonar_2:
-                  {}
-                robot0_sonar_3:
-                  {}
-                robot0_sonar_4:
-                  {}
+              robot10:
+                {}
+              robot11:
+                {}
+              robot12:
+                {}
+              robot15:
+                {}
+              robot17:
+                {}
+              robot18:
+                {}
+              robot19:
+                {}
+              robot21:
+                {}
+              robot22:
+                {}
+              robot23:
+                {}
+              robot24:
+                {}
+              robot26:
+                {}
+              robot27:
+                {}
+              robot29:
+                {}
+              robot30:
+                {}
+              robot31:
+                {}
+              robot32:
+                {}
+              robot33:
+                {}
+              robot34:
+                {}
+              robot38:
+                {}
+              robot39:
+                {}
+              robot4:
+                {}
+              robot41:
+                {}
+              robot42:
+                {}
+              robot43:
+                {}
+              robot44:
+                {}
+              robot45:
+                {}
+              robot46:
+                {}
+              robot47:
+                {}
+              robot48:
+                {}
+              robot5:
+                {}
+              robot6:
+                {}
+              robot7:
+                {}
+              robot8:
+                {}
       Update Interval: 0
       Value: true
     - Alpha: 1
@@ -130,6 +241,7 @@ Visualization Manager:
       Size (m): 0.1
       Style: Flat Squares
       Topic: /robot0/laser_0
+      Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
       Value: true
@@ -141,13 +253,14 @@ Visualization Manager:
       Name: Range
       Queue Size: 100
       Topic: /robot0/sonar_0
+      Unreliable: false
       Value: true
     - Class: rviz/MarkerArray
       Enabled: true
       Marker Topic: /stdr_server/sources_visualization_markers
       Name: SourcesMarkers
       Namespaces:
-        co2: true
+        {}
       Queue Size: 100
       Value: true
   Enabled: true
@@ -173,7 +286,7 @@ Visualization Manager:
   Value: true
   Views:
     Current:
-      Angle: 1.00583e-07
+      Angle: -0.00999992
       Class: rviz/TopDownOrtho
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.06
@@ -182,19 +295,19 @@ Visualization Manager:
         Value: false
       Name: Current View
       Near Clip Distance: 0.01
-      Scale: 53.656
+      Scale: 0.291539
       Target Frame: <Fixed Frame>
       Value: TopDownOrtho (rviz)
-      X: 7.41021
-      Y: 7.33673
+      X: 1436.17
+      Y: 960.216
     Saved: ~
 Window Geometry:
   Displays:
     collapsed: false
-  Height: 964
+  Height: 876
   Hide Left Dock: false
   Hide Right Dock: false
-  QMainWindow State: 000000ff00000000fd00000004000000000000013c00000321fc0200000008fb0000001200530065006c0065006300740069006f006e00000001e10000009b0000006400fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed0000021e00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000004100000321000000dd00fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261000000010000010f00000321fc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073010000004100000321000000b000fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000006900000003efc0100000002fb0000000800540069006d0065010000000000000690000002f600fffffffb0000000800540069006d00650100000000000004500000000000000000000004390000032100000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd00000004000000000000016a000002e2fc0200000008fb0000001200530065006c0065006300740069006f006e00000001e10000009b0000006400fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed0000021e00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c0061007900730100000028000002e2000000dd00fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261000000010000010f000002e2fc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a005600690065007700730100000028000002e2000000b000fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000005fd0000003efc0100000002fb0000000800540069006d00650100000000000005fd000002f600fffffffb0000000800540069006d0065010000000000000450000000000000000000000378000002e200000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Selection:
     collapsed: false
   Time:
@@ -203,6 +316,6 @@ Window Geometry:
     collapsed: false
   Views:
     collapsed: false
-  Width: 1680
-  X: -7
-  Y: 436
+  Width: 1533
+  X: 67
+  Y: 24

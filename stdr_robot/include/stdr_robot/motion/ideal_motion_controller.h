@@ -30,7 +30,6 @@
 **/ 
 namespace stdr_robot 
 {
-  
   /**
   @class IdealMotionController
   @brief A class that provides motion controller implementation. Inherits publicly MotionController
@@ -39,7 +38,7 @@ namespace stdr_robot
   {
     
     public:
-    
+         
       /**
       @brief Default constructor
       @param pose [const geometry_msgs::Pose2D&] The robot pose

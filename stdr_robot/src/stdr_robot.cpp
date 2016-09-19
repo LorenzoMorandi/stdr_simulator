@@ -413,6 +413,7 @@ namespace stdr_robot
   void Robot::publishTransforms(const ros::TimerEvent&)
   {
     geometry_msgs::Pose2D pose = _motionControllerPtr->getPose();
+//     ROS_INFO_STREAM("Robot: " << getName() << " Pose: " <<  pose);
     if( ! collisionExists(pose, _previousPose) )
     {
       _previousPose = pose;

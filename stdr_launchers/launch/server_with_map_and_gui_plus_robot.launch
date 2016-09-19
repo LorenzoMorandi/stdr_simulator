@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <launch>
 	
 	<include file="$(find stdr_robot)/launch/robot_manager.launch" />

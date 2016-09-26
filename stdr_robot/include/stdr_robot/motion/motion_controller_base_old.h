@@ -27,9 +27,6 @@
 #include <geometry_msgs/Twist.h>
 #include <geometry_msgs/Pose2D.h>
 #include <stdr_msgs/KinematicMsg.h>
-#include <string>
-#include <string.h>
-#include "robot_controller/robot.h"
 
 #include <ctime>
 
@@ -43,16 +40,6 @@ namespace stdr_robot {
   @class MotionController
   @brief Abstract class that provides motion controller abstraction
   **/ 
-    struct Robot_State
-    {
-//       double ref_x;
-//       double ref_y;
-      double err_lin;
-      double err_ang;
-      int robot_state;
-      int id;
-    };
-    
   class MotionController {
     
     public:
@@ -66,29 +53,6 @@ namespace stdr_robot {
       {
         _currentTwist = msg;
         sampleVelocities();
-	count--;
-      }
-      
-      virtual void stateCallback(const robot_controller::robot& robot)
-      {
-	if(c == 0)
-	{
-	    robots.resize(robot.n);
-	    c = 1;
-	}
-
-	id = robot.id;
-	
-	Robot_State tmp;
-	tmp.id = robot.id;
-// 	tmp.ref_x = robot.ref_x;
-// 	tmp.ref_y = robot.ref_y;
-	tmp.err_ang = robot.err_ang;
-	tmp.err_lin = robot.err_lin;
-	tmp.robot_state = robot.robot_state;
-	
-	robots.at(robot.id) = tmp;
-
 	count--;
       }
 
@@ -237,33 +201,21 @@ namespace stdr_robot {
             _pose(pose),
             _motion_parameters(params)
         { 
-//           _velocitySubscrider = n.subscribe(
-//             _namespace + "/cmd_vel",
-//             1,
-//             &MotionController::velocityCallback,
-//             this);
-	  sub = n.subscribe(_namespace + "/state", 1, &MotionController::stateCallback, this);
-	  count = 0; 
-	  robots.resize(1);
-	  c = 0;
-	  id = 0;
+          _velocitySubscrider = n.subscribe(
+            _namespace + "/cmd_vel",
+            1,
+            &MotionController::velocityCallback,
+            this);
+	  count = 0;  
           srand(time(NULL));
         }
 
     protected:
-      std::vector<Robot_State> robots;
-
-      int c; 
-      int id;
-      
       int count;
       //!< The base of the frame_id
       const std::string& _namespace;
       //!< ROS subscriber to the velocity topic
       ros::Subscriber _velocitySubscrider;
-      
-      ros::Subscriber sub; 
-
       //!< Frequency of motion calculation
       ros::Duration _freq;
       //!< ROS timer for generating motion calculation events
@@ -276,8 +228,7 @@ namespace stdr_robot {
       geometry_msgs::Twist _currentTwist;
       //!< The kinematic model parameters
       stdr_msgs::KinematicMsg _motion_parameters;
-      
-};
+      };
     
   typedef boost::shared_ptr<MotionController> MotionControllerPtr;
     

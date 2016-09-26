@@ -64,8 +64,8 @@ namespace stdr_robot {
       throw DoubleFrameIdException(msg);
     }
     
-//     ROS_INFO("New robot spawned successfully, with name %s.", 
-//       _spawnRobotClient.getResult()->indexedDescription.name.c_str());
+    ROS_INFO("New robot spawned successfully, with name %s.", 
+      _spawnRobotClient.getResult()->indexedDescription.name.c_str());
     
     return _spawnRobotClient.getResult()->indexedDescription;
     

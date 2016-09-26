@@ -20,6 +20,29 @@
 ******************************************************************************/
 
 #include <stdr_robot/motion/ideal_motion_controller.h>
+#include <string>
+#include <string.h>
+#include <sstream>
+#include <stdio.h>
+#include <stdlib.h>
+
+double special_sin(double err_ang) 
+{
+    if(err_ang >= M_PI/2 && err_ang <= 3*M_PI/2 || err_ang <= -M_PI/2 && err_ang >= -3*M_PI/2)
+    {
+	return 1.0;
+    }
+    else
+    {
+	return fabs(sin(err_ang));
+    }	    
+}
+
+double filt(double a, double b, double p) //x comando attuale, y comando filtrato (precedente), p peso
+{
+    b = p*b + (1-p)*a;
+    return b;
+}
 
 namespace stdr_robot {
     
@@ -56,58 +79,115 @@ namespace stdr_robot {
     count++;
     
     if(count < -5)
-	ROS_WARN_STREAM_THROTTLE(1,"Robot " << _namespace << " " << count);
+	ROS_WARN_STREAM_THROTTLE(1,"PROBLEMA: Robot " << _namespace << " " << count);
     
     ros::Duration dt = ros::Time::now() - event.last_real;
-      
-    if (robot_state.at(id) == 0)
-    {
-	_currentTwist.angular.z = 2*sin(err_ang.at(id));
-	_currentTwist.linear.x = 0.0;	
-    }
-    if(robot_state.at(id) == 1)
-    {
-	_currentTwist.angular.z = 2*sin(err_ang.at(id));
-	_currentTwist.angular.z = 4*err_lin.at(id); // MULTI CROSS
-	if (_currentTwist.linear.x > 10)
-	    _currentTwist.linear.x = 10;
-	if (_currentTwist.linear.x < 0.5)
-	    _currentTwist.linear.x = 0.5;
-    }
-    if(robot_state.at(id) == 2)
-    { 
-	_currentTwist.angular.z = 2*sin(err_ang.at(id));
-	_currentTwist.linear.x = 1.5*err_lin.at(id); // MULTI CROSS
-	if (_currentTwist.linear.x > 7)
-	    _currentTwist.linear.x = 7;
-	if (_currentTwist.linear.x < 0.2)
-	    _currentTwist.linear.x = 0.2;		
-    }
-    if(robot_state.at(id) == 3)
-    {
-	_currentTwist.angular.z = 2*sin(err_ang.at(id));
-	_currentTwist.linear.x = 0.0;	
+    
+//     ROS_WARN_STREAM_THROTTLE(1,"Robot "<< robots.at(id).id << " state " << robots.at(id).robot_state);
+    
+//     double fx = robots.at(id).ref_x - _pose.x;
+//     double fy = robots.at(id).ref_y - _pose.y;
+// 	    
+//     //Compute linear and angular error for robot i
+//     double err_ang = atan2(fy,fx) - _pose.theta;    
+//     double err_lin = sqrt(pow(fx,2) + pow(fy,2));
+
+    if (robots.at(id).robot_state == 0)
+	{
+	    if(sin(robots.at(id).err_ang) > 0)
+	    {
+		_currentTwist.angular.z = 3*special_sin(robots.at(id).err_ang);
+		_currentTwist.linear.x = 0.0;	
+		if (_currentTwist.angular.z > 2)
+		    _currentTwist.angular.z = 2;
+	    }
+	    else
+	    {
+		_currentTwist.angular.z = -3*special_sin(robots.at(id).err_ang);
+		_currentTwist.linear.x = 0.0;	
+		if (_currentTwist.angular.z < -2)
+		    _currentTwist.angular.z = -2;
+	    }
+	}
+    if(robots.at(id).robot_state == 1)
+	{
+	    _currentTwist.angular.z = 3*special_sin(robots.at(id).err_ang);
+	    _currentTwist.linear.x = 5*robots.at(id).err_lin; 
+	    if (_currentTwist.linear.x > 50)
+		_currentTwist.linear.x = 50;
+	    if (_currentTwist.linear.x < 0.1)
+		_currentTwist.linear.x = 0.1;
+	}
+    if(robots.at(id).robot_state == 2)
+	{ 
+	    _currentTwist.angular.z = 3*special_sin(robots.at(id).err_ang);
+	    _currentTwist.linear.x = 1.5*robots.at(id).err_lin; 
+	    if (_currentTwist.linear.x > 10)
+		_currentTwist.linear.x = 10;
+	    if (_currentTwist.linear.x < 0.1)
+		_currentTwist.linear.x = 0.1;		
+	}
+    if(robots.at(id).robot_state == 3)
+	{
+	    if(sin(robots.at(id).err_ang) > 0)
+	    {
+		_currentTwist.angular.z = 3*special_sin(robots.at(id).err_ang);
+		_currentTwist.linear.x = 0.0;	
+		if (_currentTwist.angular.z > 2)
+		    _currentTwist.angular.z = 2;
+	    }
+	    else
+	    {
+		_currentTwist.angular.z = -3*special_sin(robots.at(id).err_ang);
+		_currentTwist.linear.x = 0.0;	
+		if (_currentTwist.angular.z < -1)
+		    _currentTwist.angular.z = -1;
+	    }
+	}	 
+	
+	double p = 0.2;
+	
+	//////////////////////////////////////////////////////////
+    if (fabs(_currentTwist.angular.z) <= 0.0001) 
+    {      
+      _pose.x = filt(_pose.x + _currentTwist.linear.x * dt.toSec() * cosf(_pose.theta), _pose.x, p);
+      _pose.y = filt(_pose.y + _currentTwist.linear.x * dt.toSec() * sinf(_pose.theta), _pose.y, p);
     }
     
-    if (fabs(_currentTwist.angular.z) <= 0.0001) {
+    else 
+    {  
+      _pose.x = filt(_pose.x - _currentTwist.linear.x / _currentTwist.angular.z * sinf(_pose.theta) + _currentTwist.linear.x / _currentTwist.angular.z * 
+		sinf(_pose.theta + dt.toSec() * _currentTwist.angular.z), _pose.x, p);
       
-      _pose.x += _currentTwist.linear.x * dt.toSec() * cosf(_pose.theta);
-      _pose.y += _currentTwist.linear.x * dt.toSec() * sinf(_pose.theta);
+      _pose.y = filt(_pose.y + _currentTwist.linear.x / _currentTwist.angular.z * cosf(_pose.theta) - _currentTwist.linear.x / _currentTwist.angular.z * 
+		cosf(_pose.theta + dt.toSec() * _currentTwist.angular.z), _pose.y, p);
     }
-    else {
-      
-      _pose.x += - _currentTwist.linear.x / _currentTwist.angular.z * 
-        sinf(_pose.theta) + 
-        _currentTwist.linear.x / _currentTwist.angular.z * 
-        sinf(_pose.theta + dt.toSec() * _currentTwist.angular.z);
-      
-      _pose.y -= - _currentTwist.linear.x / _currentTwist.angular.z * 
-        cosf(_pose.theta) + 
-        _currentTwist.linear.x / _currentTwist.angular.z * 
-        cosf(_pose.theta + dt.toSec() * _currentTwist.angular.z);
-    }
-    _pose.theta += _currentTwist.angular.z * dt.toSec();
-  }
+     _pose.theta = filt(_pose.theta + _currentTwist.angular.z * dt.toSec(), _pose.theta, p);
+    
+//     if (fabs(_currentTwist.angular.z) <= 0.0001) {
+//       
+//       _pose.x += _currentTwist.linear.x * dt.toSec() * cosf(_pose.theta);
+//       _pose.y += _currentTwist.linear.x * dt.toSec() * sinf(_pose.theta);
+//     }
+//     
+//     else 
+//     {  
+//       _pose.x += - _currentTwist.linear.x / _currentTwist.angular.z * 
+//         sinf(_pose.theta) + 
+//         _currentTwist.linear.x / _currentTwist.angular.z * 
+//         sinf(_pose.theta + dt.toSec() * _currentTwist.angular.z);
+//       
+//       _pose.y -= - _currentTwist.linear.x / _currentTwist.angular.z * 
+//         cosf(_pose.theta) + 
+//         _currentTwist.linear.x / _currentTwist.angular.z * 
+//         cosf(_pose.theta + dt.toSec() * _currentTwist.angular.z);
+//     }
+//     _pose.theta += _currentTwist.angular.z * dt.toSec();
+  
+    ROS_WARN_STREAM_THROTTLE(1,"Robot: "<< robots.at(id).id << " -> pose_x: " << _pose.x << " -> pose_y: " << _pose.y << " -> pose_theta: " << _pose.theta 
+			    << " -> linear_x: " << _currentTwist.linear.x  << " -> angular: " << _currentTwist.angular.z << " -> state: " << robots.at(id).robot_state 
+			    << " -> ang_err: " << robots.at(id).err_ang << " -> lin_err: " << robots.at(id).err_lin);   
+}
   
   /**
   @brief Default destructor 

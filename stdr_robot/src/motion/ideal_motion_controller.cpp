@@ -140,8 +140,8 @@ namespace stdr_robot {
 	    {
 		_currentTwist.angular.z = -3*special_sin(robots.at(id).err_ang);
 		_currentTwist.linear.x = 0.0;	
-		if (_currentTwist.angular.z < -1)
-		    _currentTwist.angular.z = -1;
+		if (_currentTwist.angular.z < -2)
+		    _currentTwist.angular.z = -2;
 	    }
 	}	 
 	

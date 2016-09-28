@@ -36,6 +36,7 @@ namespace stdr_gui
     current_pose_ = initial_pose_;
     footprint_ = msg.robot.footprint;
     radius_ = msg.robot.footprint.radius;
+    robot_type_ = msg.robot.robot_type;
     frame_id_ = msg.name;
     show_label_ = true;
     show_circles_ = false;
@@ -169,7 +170,10 @@ namespace stdr_gui
     QPainter painter(m);
     painter.setRenderHint(QPainter::Antialiasing, true);
     
-    painter.setPen(QColor(0,0,200,50 + 100 * (2 - visualization_status_)));
+    if(robot_type_ == 1)
+	painter.setPen(QColor(255,0,0,50 + 100 * (2 - visualization_status_)));
+    else
+	painter.setPen(QColor(0,0,255,50 + 100 * (2 - visualization_status_)));
     
     if(footprint_.points.size() == 0)
     {

@@ -93,6 +93,9 @@ namespace stdr_gui
       //!< Robot footprint if not circular
       stdr_msgs::FootprintMsg footprint_;
       
+      //!< Robot Type (Public or Private)	
+      bool robot_type_;
+      
       //!< Visualization image
       QImage visualization;
       

@@ -1,4 +1,5 @@
 geometry_msgs/Pose2D initialPose
+bool robot_type
 
 stdr_msgs/FootprintMsg footprint
 

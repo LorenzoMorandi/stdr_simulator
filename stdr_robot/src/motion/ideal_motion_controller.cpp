@@ -98,15 +98,15 @@ namespace stdr_robot {
 	    {
 		_currentTwist.angular.z = 3*special_sin(robots.at(id).err_ang);
 		_currentTwist.linear.x = 0.0;	
-		if (_currentTwist.angular.z > 2)
-		    _currentTwist.angular.z = 2;
+		if (_currentTwist.angular.z > 1)
+		    _currentTwist.angular.z = 1;
 	    }
 	    else
 	    {
 		_currentTwist.angular.z = -3*special_sin(robots.at(id).err_ang);
 		_currentTwist.linear.x = 0.0;	
-		if (_currentTwist.angular.z < -2)
-		    _currentTwist.angular.z = -2;
+		if (_currentTwist.angular.z < -1)
+		    _currentTwist.angular.z = -1;
 	    }
 	}
     if(robots.at(id).robot_state == 1)
@@ -133,22 +133,22 @@ namespace stdr_robot {
 	    {
 		_currentTwist.angular.z = 3*special_sin(robots.at(id).err_ang);
 		_currentTwist.linear.x = 0.0;	
-		if (_currentTwist.angular.z > 2)
-		    _currentTwist.angular.z = 2;
+		if (_currentTwist.angular.z > 1)
+		    _currentTwist.angular.z = 1;
 	    }
 	    else
 	    {
 		_currentTwist.angular.z = -3*special_sin(robots.at(id).err_ang);
 		_currentTwist.linear.x = 0.0;	
-		if (_currentTwist.angular.z < -2)
-		    _currentTwist.angular.z = -2;
+		if (_currentTwist.angular.z < -1)
+		    _currentTwist.angular.z = -1;
 	    }
 	}	 
 	
-	double p = 0.2;
+	double p = 0.0;
 	
 	//////////////////////////////////////////////////////////
-    if (fabs(_currentTwist.angular.z) <= 0.0001) 
+    if (fabs(_currentTwist.angular.z) <= 0.001) 
     {      
       _pose.x = filt(_pose.x + _currentTwist.linear.x * dt.toSec() * cosf(_pose.theta), _pose.x, p);
       _pose.y = filt(_pose.y + _currentTwist.linear.x * dt.toSec() * sinf(_pose.theta), _pose.y, p);

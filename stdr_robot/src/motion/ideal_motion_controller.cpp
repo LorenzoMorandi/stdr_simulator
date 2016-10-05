@@ -28,7 +28,7 @@
 
 double special_sin(double err_ang) 
 {
-    if(err_ang >= M_PI/2 && err_ang <= 3*M_PI/2 || err_ang <= -M_PI/2 && err_ang >= -3*M_PI/2)
+    if((err_ang >= M_PI/2 && err_ang <= 3*M_PI/2) || (err_ang <= -M_PI/2 && err_ang >= -3*M_PI/2))
     {
 	return 1.0;
     }
@@ -113,8 +113,8 @@ namespace stdr_robot {
 	{
 	    _currentTwist.angular.z = 3*special_sin(robots.at(id).err_ang);
 	    _currentTwist.linear.x = 5*robots.at(id).err_lin; 
-	    if (_currentTwist.linear.x > 50)
-		_currentTwist.linear.x = 50;
+	    if (_currentTwist.linear.x > 30)
+		_currentTwist.linear.x = 30;
 	    if (_currentTwist.linear.x < 0.1)
 		_currentTwist.linear.x = 0.1;
 	}
@@ -148,7 +148,7 @@ namespace stdr_robot {
 	double p = 0.0;
 	
 	//////////////////////////////////////////////////////////
-    if (fabs(_currentTwist.angular.z) <= 0.001) 
+    if (fabs(_currentTwist.angular.z) <= 0.0001) 
     {      
       _pose.x = filt(_pose.x + _currentTwist.linear.x * dt.toSec() * cosf(_pose.theta), _pose.x, p);
       _pose.y = filt(_pose.y + _currentTwist.linear.x * dt.toSec() * sinf(_pose.theta), _pose.y, p);

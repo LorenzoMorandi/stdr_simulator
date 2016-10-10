@@ -170,10 +170,36 @@ namespace stdr_gui
     QPainter painter(m);
     painter.setRenderHint(QPainter::Antialiasing, true);
     
-    if(robot_type_ == 1)
+    if(robot_type_ == 0)
+    {
 	painter.setPen(QColor(255,0,0,50 + 100 * (2 - visualization_status_)));
-    else
+	painter.setBrush(Qt::red);
+    }
+    else if(robot_type_ == 1)
+    {
+	painter.setPen(QColor(0,255,0,50 + 100 * (2 - visualization_status_)));
+	painter.setBrush( Qt::green );
+    }
+    else if(robot_type_ == 2)
+    {
 	painter.setPen(QColor(0,0,255,50 + 100 * (2 - visualization_status_)));
+	painter.setBrush( Qt::blue );
+    }
+    else if(robot_type_ == 3)
+    {
+	painter.setPen(QColor(0,255,255,50 + 100 * (2 - visualization_status_)));
+	painter.setBrush( Qt::cyan );
+    }
+    else if(robot_type_ == 4)
+    {
+	painter.setPen(QColor(255,0,127,50 + 100 * (2 - visualization_status_)));
+	painter.setBrush( Qt::magenta );
+    }
+    else
+    {
+	painter.setPen(QColor(0,0,0,50 + 100 * (2 - visualization_status_)));
+	painter.setBrush( Qt::black );
+    }
     
     if(footprint_.points.size() == 0)
     {

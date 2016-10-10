@@ -94,7 +94,7 @@ namespace stdr_gui
       stdr_msgs::FootprintMsg footprint_;
       
       //!< Robot Type (Public or Private)	
-      bool robot_type_;
+      int robot_type_;
       
       //!< Visualization image
       QImage visualization;

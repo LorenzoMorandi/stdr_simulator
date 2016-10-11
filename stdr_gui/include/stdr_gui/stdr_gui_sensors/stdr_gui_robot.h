@@ -96,6 +96,8 @@ namespace stdr_gui
       //!< Robot Type (Public or Private)	
       int robot_type_;
       
+      bool bus_stop;
+      
       //!< Visualization image
       QImage visualization;
       

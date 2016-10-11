@@ -1,5 +1,6 @@
 geometry_msgs/Pose2D initialPose
 int8 robot_type
+bool bus_stop
 
 stdr_msgs/FootprintMsg footprint
 

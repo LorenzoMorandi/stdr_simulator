@@ -38,6 +38,7 @@ namespace stdr_gui
     radius_ = msg.robot.footprint.radius;
     robot_type_ = msg.robot.robot_type;
     frame_id_ = msg.name;
+    bus_stop = msg.robot.bus_stop;
     show_label_ = true;
     show_circles_ = false;
     visualization_status_ = 0;
@@ -170,30 +171,60 @@ namespace stdr_gui
     QPainter painter(m);
     painter.setRenderHint(QPainter::Antialiasing, true);
     
-    if(robot_type_ == 0)
+    if(robot_type_ == 0 && bus_stop == 0)
     {
 	painter.setPen(QColor(255,0,0,50 + 100 * (2 - visualization_status_)));
 	painter.setBrush(Qt::red);
     }
-    else if(robot_type_ == 1)
+    else if(robot_type_ == 0 && bus_stop == 1)
+    {
+	painter.setPen(QColor(255,0,0,50 + 100 * (2 - visualization_status_)));
+	painter.setBrush(Qt::NoBrush);
+    }
+    else if(robot_type_ == 1 && bus_stop == 0)
     {
 	painter.setPen(QColor(0,255,0,50 + 100 * (2 - visualization_status_)));
 	painter.setBrush( Qt::green );
     }
-    else if(robot_type_ == 2)
+    else if(robot_type_ == 1 && bus_stop == 1)
+    {
+	painter.setPen(QColor(0,255,0,50 + 100 * (2 - visualization_status_)));
+	painter.setBrush(Qt::NoBrush);
+    }    
+    else if(robot_type_ == 2 && bus_stop == 0)
     {
 	painter.setPen(QColor(0,0,255,50 + 100 * (2 - visualization_status_)));
 	painter.setBrush( Qt::blue );
     }
-    else if(robot_type_ == 3)
+    else if(robot_type_ == 2 && bus_stop == 1)
+    {
+	painter.setPen(QColor(0,0,255,50 + 100 * (2 - visualization_status_)));
+	painter.setBrush(Qt::NoBrush);
+    }
+    else if(robot_type_ == 3 && bus_stop == 0)
     {
 	painter.setPen(QColor(0,255,255,50 + 100 * (2 - visualization_status_)));
 	painter.setBrush( Qt::cyan );
     }
-    else if(robot_type_ == 4)
+    else if(robot_type_ == 3 && bus_stop == 1)
+    {
+	painter.setPen(QColor(0,255,255,50 + 100 * (2 - visualization_status_)));
+	painter.setBrush(Qt::NoBrush);
+    }
+    else if(robot_type_ == 4 && bus_stop == 0)
     {
 	painter.setPen(QColor(255,0,127,50 + 100 * (2 - visualization_status_)));
 	painter.setBrush( Qt::magenta );
+    }
+    else if(robot_type_ == 4 && bus_stop == 1)
+    {
+	painter.setPen(QColor(255,0,127,50 + 100 * (2 - visualization_status_)));
+	painter.setBrush(Qt::NoBrush);
+    }
+    else if(robot_type_ == 7 && bus_stop == 1)
+    {
+	painter.setPen(QColor(255,255,0,50 + 100 * (2 - visualization_status_)));
+	painter.setBrush( Qt::darkYellow );
     }
     else
     {
@@ -201,7 +232,7 @@ namespace stdr_gui
 	painter.setBrush( Qt::black );
     }
     
-    if(footprint_.points.size() == 0)
+    if(footprint_.points.size() == 0 && bus_stop == 0)
     {
       painter.drawEllipse(
         (current_pose_.x - radius_) / resolution_,
@@ -216,6 +247,22 @@ namespace stdr_gui
           radius_ / resolution_ * 1.05 * cos(current_pose_.theta),
         current_pose_.y / resolution_ + 
           radius_ / resolution_ * 1.05 * sin(current_pose_.theta));
+    }
+    else if(footprint_.points.size() == 0 && bus_stop == 1)
+    {
+	painter.drawRect(
+        (current_pose_.x - radius_) / resolution_,
+        (current_pose_.y - radius_) / resolution_,
+        radius_ * 2.0 / resolution_,
+        radius_ * 2.0 / resolution_);
+	
+// 	painter.drawImage(
+// 	(current_pose_.x - radius_) / resolution_,
+//         (current_pose_.y - radius_) / resolution_,
+// 	QImage('img_smileys.png')	
+// 	);
+	
+	show_label_ = false;
     }
     else
     {

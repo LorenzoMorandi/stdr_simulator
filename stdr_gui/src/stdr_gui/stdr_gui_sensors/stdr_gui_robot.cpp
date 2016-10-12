@@ -174,7 +174,7 @@ namespace stdr_gui
     if(robot_type_ == 0 && bus_stop == 0)
     {
 	painter.setPen(QColor(255,0,0,50 + 100 * (2 - visualization_status_)));
-	painter.setBrush(Qt::red);
+	painter.setBrush(Qt::darkRed);
     }
     else if(robot_type_ == 0 && bus_stop == 1)
     {
@@ -184,7 +184,7 @@ namespace stdr_gui
     else if(robot_type_ == 1 && bus_stop == 0)
     {
 	painter.setPen(QColor(0,255,0,50 + 100 * (2 - visualization_status_)));
-	painter.setBrush( Qt::green );
+	painter.setBrush( Qt::darkGreen );
     }
     else if(robot_type_ == 1 && bus_stop == 1)
     {
@@ -194,7 +194,7 @@ namespace stdr_gui
     else if(robot_type_ == 2 && bus_stop == 0)
     {
 	painter.setPen(QColor(0,0,255,50 + 100 * (2 - visualization_status_)));
-	painter.setBrush( Qt::blue );
+	painter.setBrush( Qt::darkBlue );
     }
     else if(robot_type_ == 2 && bus_stop == 1)
     {
@@ -204,7 +204,7 @@ namespace stdr_gui
     else if(robot_type_ == 3 && bus_stop == 0)
     {
 	painter.setPen(QColor(0,255,255,50 + 100 * (2 - visualization_status_)));
-	painter.setBrush( Qt::cyan );
+	painter.setBrush( Qt::darkCyan );
     }
     else if(robot_type_ == 3 && bus_stop == 1)
     {
@@ -214,7 +214,7 @@ namespace stdr_gui
     else if(robot_type_ == 4 && bus_stop == 0)
     {
 	painter.setPen(QColor(255,0,127,50 + 100 * (2 - visualization_status_)));
-	painter.setBrush( Qt::magenta );
+	painter.setBrush( Qt::darkMagenta );
     }
     else if(robot_type_ == 4 && bus_stop == 1)
     {
@@ -224,7 +224,7 @@ namespace stdr_gui
     else if(robot_type_ == 7 && bus_stop == 1)
     {
 	painter.setPen(QColor(255,255,0,50 + 100 * (2 - visualization_status_)));
-	painter.setBrush( Qt::darkYellow );
+	painter.setBrush( Qt::NoBrush );
     }
     else
     {
@@ -248,8 +248,32 @@ namespace stdr_gui
         current_pose_.y / resolution_ + 
           radius_ / resolution_ * 1.05 * sin(current_pose_.theta));
     }
+    else if(footprint_.points.size() == 0 && bus_stop == 1 && robot_type_ == 7)
+    {
+	QPen pen=painter.pen();
+	pen.setWidth(5);
+	painter.setPen(pen);
+	
+	QRect rect = QRect((current_pose_.x - radius_) / resolution_,
+        (current_pose_.y - radius_) / resolution_,
+        radius_ * 3.0 / resolution_,
+        radius_ * 3.0 / resolution_);
+	
+	painter.drawRect(rect);
+
+// 	painter.drawImage(
+// 	(current_pose_.x - radius_) / resolution_,
+//         (current_pose_.y - radius_) / resolution_,
+// 	QImage('img_smileys.png')	
+// 	);
+	
+    }
     else if(footprint_.points.size() == 0 && bus_stop == 1)
     {
+	QPen pen=painter.pen();
+	pen.setWidth(5);
+	painter.setPen(pen);
+	
 	painter.drawRect(
         (current_pose_.x - radius_) / resolution_,
         (current_pose_.y - radius_) / resolution_,
@@ -261,7 +285,6 @@ namespace stdr_gui
 //         (current_pose_.y - radius_) / resolution_,
 // 	QImage('img_smileys.png')	
 // 	);
-	
 	show_label_ = false;
     }
     else
@@ -377,29 +400,67 @@ namespace stdr_gui
     QPainter painter(m);
     
     int text_size = frame_id_.size();
+        
+    if(bus_stop == 1 && robot_type_ == 7)
+    {
+      painter.setPen(QColor(255,255,255,100 * (2 - visualization_status_)));
     
-    painter.setPen(QColor(0,0,0,100 * (2 - visualization_status_)));
+      painter.drawRect(
+      current_pose_.x / ocgd - 2 -60,
+      m->height() - (current_pose_.y / ocgd) - 15 -50,
+      (5 + 8 * 9)*2,
+      40);
     
-    painter.drawRect(
+      painter.setPen(QColor(0,0,0,100 * (2 - visualization_status_)));
+
+      painter.fillRect(
+      current_pose_.x / ocgd - 2 -60,
+      m->height() - (current_pose_.y / ocgd) - 15 -50,
+      (5 + 8 * 9)*2,
+      40,
+      QBrush(QColor(255,255,255,100 * (2 - visualization_status_))));
+    
+      QFont font = QFont("Courier New");
+      
+      font.setPointSize(font.pointSize() * 2);
+
+      painter.setFont(font);
+      
+//       QPen pen=painter.pen();
+//       pen.setWidth(50);
+//       painter.setPen(pen);
+      
+      painter.drawText(
+      current_pose_.x / ocgd -62,
+      m->height() - (current_pose_.y / ocgd) -35,
+      "BUS CALL");
+    }
+    else
+    {
+      painter.setPen(QColor(0,0,0,100 * (2 - visualization_status_)));
+    
+      painter.drawRect(
       current_pose_.x / ocgd + 10,
       m->height() - (current_pose_.y / ocgd) - 30,
       3 + text_size * 9,
       20);
     
-    painter.setPen(QColor(255,255,255,100 * (2 - visualization_status_)));
+      painter.setPen(QColor(255,255,255,100 * (2 - visualization_status_)));
     
-    painter.fillRect(
+      painter.fillRect(
       current_pose_.x / ocgd + 10,
       m->height() - (current_pose_.y / ocgd) - 30,
       3 + text_size * 9,
       20,
       QBrush(QColor(0,0,0,100 * (2 - visualization_status_))));
     
-    painter.setFont(QFont("Courier New"));
-    painter.drawText(
+      painter.setFont(QFont("Courier New"));	
+	
+      painter.drawText(
       current_pose_.x / ocgd + 12,
       m->height() - (current_pose_.y / ocgd) - 15,
       QString(frame_id_.c_str()));
+    }
   }
   
   /**

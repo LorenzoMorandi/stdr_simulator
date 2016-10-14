@@ -76,20 +76,17 @@ namespace stdr_robot {
 // 	    robots.resize(robot.n);
 // 	    c = 1;
 // 	}
+	robots.resize(robot.n);
 
 	id = robot.id;
 	
 	Robot_State tmp;
 	tmp.id = robot.id;
-// 	tmp.ref_x = robot.ref_x;
-// 	tmp.ref_y = robot.ref_y;
 	tmp.err_ang = robot.err_ang;
 	tmp.err_lin = robot.err_lin;
 	tmp.robot_state = robot.robot_state;
 	
 	robots.at(robot.id) = tmp;
-
-	count--;
       }
 
       /**
@@ -244,7 +241,7 @@ namespace stdr_robot {
 //             this);
 	  sub = n.subscribe(_namespace + "/state", 1, &MotionController::stateCallback, this);
 	  count = 0; 
-	  robots.resize(100);
+	  robots.resize(1);
 	  c = 0;
 	  id = 0;
           srand(time(NULL));

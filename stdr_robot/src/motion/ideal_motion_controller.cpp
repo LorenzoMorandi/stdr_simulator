@@ -76,21 +76,8 @@ namespace stdr_robot {
   void IdealMotionController::calculateMotion(const ros::TimerEvent& event) 
   {
     //!< updates _posePtr based on _currentTwist and time passed (event.last_real)
-    count++;
-    
-    if(count < -5)
-	ROS_WARN_STREAM_THROTTLE(1,"PROBLEMA: Robot " << _namespace << " " << count);
     
     ros::Duration dt = ros::Time::now() - event.last_real;
-    
-//     ROS_WARN_STREAM_THROTTLE(1,"Robot "<< robots.at(id).id << " state " << robots.at(id).robot_state);
-    
-//     double fx = robots.at(id).ref_x - _pose.x;
-//     double fy = robots.at(id).ref_y - _pose.y;
-// 	    
-//     //Compute linear and angular error for robot i
-//     double err_ang = atan2(fy,fx) - _pose.theta;    
-//     double err_lin = sqrt(pow(fx,2) + pow(fy,2));
 
     if (robots.at(id).robot_state == 0)
 	{

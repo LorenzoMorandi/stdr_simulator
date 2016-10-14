@@ -71,11 +71,11 @@ namespace stdr_robot {
       
       virtual void stateCallback(const robot_controller::robot& robot)
       {
-	if(c == 0)
-	{
-	    robots.resize(robot.n);
-	    c = 1;
-	}
+// 	if(c == 0)
+// 	{
+// 	    robots.resize(robot.n);
+// 	    c = 1;
+// 	}
 
 	id = robot.id;
 	
@@ -244,7 +244,7 @@ namespace stdr_robot {
 //             this);
 	  sub = n.subscribe(_namespace + "/state", 1, &MotionController::stateCallback, this);
 	  count = 0; 
-	  robots.resize(1);
+	  robots.resize(100);
 	  c = 0;
 	  id = 0;
           srand(time(NULL));

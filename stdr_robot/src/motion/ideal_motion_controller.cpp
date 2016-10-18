@@ -78,6 +78,7 @@ namespace stdr_robot {
     //!< updates _posePtr based on _currentTwist and time passed (event.last_real)
     
     ros::Duration dt = ros::Time::now() - event.last_real;
+    dt= dt*2;
 
     if (robots.at(id).robot_state == 0)
 	{
